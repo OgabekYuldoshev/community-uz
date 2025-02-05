@@ -1,14 +1,11 @@
 "use server";
+
 import { authActionClient } from "@/lib/actions";
 import { prisma } from "@/lib/prisma";
-import { z } from "zod";
+import { newBoardFormSchema } from "./schema";
 
 export const createBoardAction = authActionClient
-	.schema(
-		z.object({
-			title: z.string(),
-		}),
-	)
+	.schema(newBoardFormSchema)
 	.action(async ({ ctx, parsedInput }) => {
 		const board = await prisma.board.create({
 			data: {
@@ -18,12 +15,3 @@ export const createBoardAction = authActionClient
 		});
 		return board;
 	});
-
-export const boardListAction = authActionClient.action(async ({ ctx }) => {
-	const boards = await prisma.board.findMany({
-		where: {
-			userId: ctx.user.id,
-		},
-	});
-	return boards;
-});

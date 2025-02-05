@@ -20,35 +20,36 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import React, { type PropsWithChildren } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState, type PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-import { createBoardAction } from "./action";
+import type { z } from "zod";
+import { createBoardAction } from "../actions";
+import { newBoardFormSchema } from "../schema";
 
 export function CreateNewBoard({ children }: PropsWithChildren) {
+	const [isOpen, setOpen] = useState(false);
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Create board</DialogTitle>
 					<DialogDescription>Please, enter board title</DialogDescription>
 				</DialogHeader>
-				<BoardForm />
+				<BoardForm onClose={() => setOpen(false)} />
 			</DialogContent>
 		</Dialog>
 	);
 }
 
-const formSchema = z.object({
-	title: z.string().min(3),
-});
-type FormValue = z.infer<typeof formSchema>;
+type FormValue = z.infer<typeof newBoardFormSchema>;
 
-function BoardForm() {
+function BoardForm({ onClose }: { onClose(): void }) {
+	const router = useRouter();
 	const form = useForm<FormValue>({
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(newBoardFormSchema),
 		defaultValues: {
 			title: "",
 		},
@@ -61,6 +62,8 @@ function BoardForm() {
 			toast.error(result?.serverError || "");
 			return;
 		}
+		onClose();
+		router.push(`/boards/${result?.data?.id}`);
 	}
 
 	return (

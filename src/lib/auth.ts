@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { omit } from "radash";
 import { z } from "zod";
@@ -10,8 +10,18 @@ const authSchema = z.object({
 	password: z.string().min(6),
 });
 
+declare module "next-auth" {
+	interface Session {
+		user: User & {
+			id: string;
+			role: string;
+		};
+	}
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	session: { strategy: "jwt" },
+	secret: process.env.AUTH_SECRET,
 	providers: [
 		Credentials({
 			id: "credentials",
@@ -54,4 +64,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 		}),
 	],
+	callbacks: {
+		async session({ token, session }) {
+			if (token) {
+				session.user.id = token.sub as string;
+				session.user.email = token.email as string;
+				session.user.name = token.name as string;
+				session.user.image = token.picture as string;
+			}
+			return session;
+		},
+	},
 });

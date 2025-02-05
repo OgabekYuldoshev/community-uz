@@ -1,9 +1,7 @@
-import { auth, signIn } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 import React from "react";
 
 export default async function page() {
-	const session = await auth();
-	console.log(session);
 	return (
 		<div>
 			<form

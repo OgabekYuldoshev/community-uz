@@ -4,31 +4,33 @@ import { authActionClient } from "@/lib/actions";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { newBoardFormSchema } from "./schema";
+import { protectedProducer } from "@/lib/server-action";
 
-export const createBoardAction = authActionClient
-	.schema(newBoardFormSchema)
-	.action(async ({ ctx, parsedInput }) => {
+export const createBoardAction = protectedProducer
+	.input(newBoardFormSchema)
+	.handler(async ({ input, ctx }) => {
 		const board = await prisma.board.create({
 			data: {
-				title: parsedInput.title,
+				title: input.title,
 				userId: ctx.user.id,
 			},
 		});
-		return board;
-	});
 
-export const boardListAction = authActionClient.action(async ({ ctx }) => {
+		return board
+	})
+
+
+export const getBoardsAction = protectedProducer.handler(async ({ ctx }) => {
 	const boards = await prisma.board.findMany({
 		where: {
 			userId: ctx.user.id,
 		},
 	});
-	return boards;
-});
+	return boards
+})
 
-export const boardSingleAction = authActionClient
-	.schema(z.object({ id: z.string() }))
-	.action(async ({ ctx, parsedInput: { id } }) => {
+export const getBoardByIdAction = protectedProducer.input(
+	z.object({ id: z.string() })).handler(async ({ input: { id }, ctx }) => {
 		const board = await prisma.board.findFirst({
 			where: {
 				id,
@@ -40,5 +42,5 @@ export const boardSingleAction = authActionClient
 			throw new Error("Board not found.");
 		}
 
-		return board;
-	});
+		return board
+	})

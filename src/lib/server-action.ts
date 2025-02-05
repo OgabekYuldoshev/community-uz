@@ -5,14 +5,14 @@ const authProducer = createServerActionProcedure().handler(async () => {
   try {
     const session = await auth()
 
-    if (!session) throw new Error("Invalid credentials.")
+    if (!session) throw "Invalid credentials."
 
     return {
       user: session.user
     }
   } catch (error) {
     console.error(error)
-    throw new Error("Invalid credentials.");
+    throw 'Invalid credentials.'
   }
 })
 

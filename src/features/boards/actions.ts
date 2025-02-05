@@ -1,6 +1,5 @@
 "use server";
 
-import { authActionClient } from "@/lib/actions";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { newBoardFormSchema } from "./schema";
@@ -39,7 +38,7 @@ export const getBoardByIdAction = protectedProducer.input(
 		});
 
 		if (!board) {
-			throw new Error("Board not found.");
+			throw "Board not found."
 		}
 
 		return board

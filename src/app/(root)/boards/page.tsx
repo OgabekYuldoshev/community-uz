@@ -12,10 +12,9 @@ export default async function Page() {
 
   return (
     <>
-      <PageHeader breadcrumbs={["Boards"]} />
+      <PageHeader title="Boards" breadcrumbs={["Boards"]} />
       <div className="p-4">
-        <h1 className="text-lg">Boards</h1>
-        <div className="grid grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-4 gap-4">
           <CreateNewBoard>
             <div className="border border-dashed p-4 rounded h-32 flex items-center justify-center cursor-pointer hover:ring transition-all text-muted-foreground hover:text-primary">
               <AppWindow className="mr-2" size={20} />

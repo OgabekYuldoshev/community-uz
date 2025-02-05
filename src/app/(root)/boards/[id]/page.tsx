@@ -15,7 +15,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      <PageHeader breadcrumbs={[{ label: "Boards", url: "/boards" }]} />
+      <PageHeader
+        title={data.title}
+        breadcrumbs={[{ label: "Boards", url: "/boards" }, data.title]}
+      />
     </>
   );
 }

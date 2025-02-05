@@ -28,4 +28,16 @@ model User {
   role      UserType @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Board Board[]
+}
+
+model Board {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+
+  user User @relation(fields: [userId], references: [id])
 }

@@ -1,5 +1,6 @@
 import PageHeader from "@/components/page-header";
 import { getBoardByIdAction } from "@/features/boards/actions";
+import { Kanban } from "@/features/boards/components/kanban";
 import React from "react";
 
 interface PageProps {
@@ -11,14 +12,15 @@ export default async function Page({ params }: PageProps) {
 
   if (error) throw error;
 
-  console.log(data);
-
   return (
     <>
       <PageHeader
         title={data.title}
         breadcrumbs={[{ label: "Boards", url: "/boards" }, data.title]}
       />
+      <div className="px-4">
+        <Kanban />
+      </div>
     </>
   );
 }

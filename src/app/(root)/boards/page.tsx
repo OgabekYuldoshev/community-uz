@@ -13,7 +13,7 @@ export default async function Page() {
   return (
     <>
       <PageHeader title="Boards" breadcrumbs={["Boards"]} />
-      <div className="p-4">
+      <div className="px-4">
         <div className="grid grid-cols-4 gap-4">
           <CreateNewBoard>
             <div className="border border-dashed p-4 rounded h-32 flex items-center justify-center cursor-pointer hover:ring transition-all text-muted-foreground hover:text-primary">

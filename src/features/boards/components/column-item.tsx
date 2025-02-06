@@ -7,7 +7,7 @@ export type ListItemProps = {
 export function ColumnItem({ column }: ListItemProps) {
 	return (
 		<li className="block self-start h-full flex-shrink-0">
-			<div className="border p-2 w-[200px]">{column.title}</div>
+			<div className="border p-2 w-[275px]">{column.title}</div>
 		</li>
 	);
 }

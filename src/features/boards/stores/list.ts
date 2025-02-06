@@ -1,22 +1,23 @@
 import { create } from "zustand";
 
-export type List = {
-  id: string,
-  title: string
-}
+export type Column = {
+	id: string;
+	title: string;
+};
 interface State {
-  lists: List[]
+	columns: Column[];
 }
 
 interface Action {
-  setLists: (lists: List[]) => void
-  addList: (list: List) => void
+	setColumns: (columns: Column[]) => void;
+	addColumn: (column: Column) => void;
 }
 
-type ListStore = State & Action
+type ListStore = State & Action;
 
 export const useListStore = create<ListStore>((set) => ({
-  lists: [],
-  setLists: (lists) => set(() => ({ lists })),
-  addList: (list) => set((state) => ({ lists: [...state.lists, list] }))
-}))
+	columns: [],
+	setColumns: (columns) => set(() => ({ columns })),
+	addColumn: (column) =>
+		set((state) => ({ columns: [...state.columns, column] })),
+}));

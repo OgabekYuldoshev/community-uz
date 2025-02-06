@@ -5,15 +5,15 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
 export default async function Layout({ children }: PropsWithChildren) {
-  const session = await auth();
-  if (!session) redirect("/login");
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      <main className="flex flex-col w-full h-full">
-        <AppTopbar />
-        {children}
-      </main>
-    </SidebarProvider>
-  );
+	const session = await auth();
+	if (!session) redirect("/login");
+	return (
+		<SidebarProvider>
+			<AppSidebar />
+			<main className="relative flex min-h-svh flex-1 flex-col">
+				<AppTopbar />
+				{children}
+			</main>
+		</SidebarProvider>
+	);
 }

@@ -1,9 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
 import { newBoardFormSchema } from "./schema";
-import { protectedProducer } from "@/lib/server-action";
 
 export const createBoardAction = protectedProducer
 	.input(newBoardFormSchema)
@@ -15,9 +15,8 @@ export const createBoardAction = protectedProducer
 			},
 		});
 
-		return board
-	})
-
+		return board;
+	});
 
 export const getBoardsAction = protectedProducer.handler(async ({ ctx }) => {
 	const boards = await prisma.board.findMany({
@@ -25,11 +24,12 @@ export const getBoardsAction = protectedProducer.handler(async ({ ctx }) => {
 			userId: ctx.user.id,
 		},
 	});
-	return boards
-})
+	return boards;
+});
 
-export const getBoardByIdAction = protectedProducer.input(
-	z.object({ id: z.string() })).handler(async ({ input: { id }, ctx }) => {
+export const getBoardByIdAction = protectedProducer
+	.input(z.object({ id: z.string() }))
+	.handler(async ({ input: { id }, ctx }) => {
 		const board = await prisma.board.findFirst({
 			where: {
 				id,
@@ -38,8 +38,8 @@ export const getBoardByIdAction = protectedProducer.input(
 		});
 
 		if (!board) {
-			throw "Board not found."
+			throw "Board not found.";
 		}
 
-		return board
-	})
+		return board;
+	});

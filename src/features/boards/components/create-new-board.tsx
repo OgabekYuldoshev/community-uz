@@ -2,20 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,65 +29,65 @@ import { createBoardAction } from "../actions";
 import { newBoardFormSchema } from "../schema";
 
 export function CreateNewBoard({ children }: PropsWithChildren) {
-  const [isOpen, setOpen] = useState(false);
-  return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create board</DialogTitle>
-          <DialogDescription>Please, enter board title</DialogDescription>
-        </DialogHeader>
-        <BoardForm onClose={() => setOpen(false)} />
-      </DialogContent>
-    </Dialog>
-  );
+	const [isOpen, setOpen] = useState(false);
+	return (
+		<Dialog open={isOpen} onOpenChange={setOpen}>
+			<DialogTrigger asChild>{children}</DialogTrigger>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Create board</DialogTitle>
+					<DialogDescription>Please, enter board title</DialogDescription>
+				</DialogHeader>
+				<BoardForm onClose={() => setOpen(false)} />
+			</DialogContent>
+		</Dialog>
+	);
 }
 
 type FormValue = z.infer<typeof newBoardFormSchema>;
 
 function BoardForm({ onClose }: { onClose(): void }) {
-  const router = useRouter();
-  const form = useForm<FormValue>({
-    resolver: zodResolver(newBoardFormSchema),
-    defaultValues: {
-      title: "",
-    },
-  });
+	const router = useRouter();
+	const form = useForm<FormValue>({
+		resolver: zodResolver(newBoardFormSchema),
+		defaultValues: {
+			title: "",
+		},
+	});
 
-  async function onSubmit(values: FormValue) {
-    const [data, error] = await createBoardAction(values);
+	async function onSubmit(values: FormValue) {
+		const [data, error] = await createBoardAction(values);
 
-    if (error) {
-      toast.error(error.data);
-      return;
-    }
-    router.push(`/boards/${data.id}`);
-  }
+		if (error) {
+			toast.error(error.data);
+			return;
+		}
+		router.push(`/boards/${data.id}`);
+	}
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter board title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-fit justify-self-end">
-          {form.formState.isSubmitting ? (
-            <Loader2 className="animate-spin" />
-          ) : null}
-          Create a new board
-        </Button>
-      </form>
-    </Form>
-  );
+	return (
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+				<FormField
+					control={form.control}
+					name="title"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Title</FormLabel>
+							<FormControl>
+								<Input placeholder="Enter board title" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<Button type="submit" className="w-fit justify-self-end">
+					{form.formState.isSubmitting ? (
+						<Loader2 className="animate-spin" />
+					) : null}
+					Create a new board
+				</Button>
+			</form>
+		</Form>
+	);
 }

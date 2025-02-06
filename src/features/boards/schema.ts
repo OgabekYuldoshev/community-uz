@@ -6,5 +6,6 @@ export const newBoardFormSchema = z.object({
 
 export const columnFormSchema = z.object({
 	title: z.string().min(1),
+	position: z.number(),
 	boardId: z.string().min(1),
 });

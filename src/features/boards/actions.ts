@@ -48,10 +48,7 @@ export const createColumnAction = protectedProducer
 	.input(columnFormSchema)
 	.handler(async ({ input }) => {
 		const column = await prisma.column.create({
-			data: {
-				title: input.title,
-				boardId: input.boardId,
-			},
+			data: input,
 		});
 
 		return column;

@@ -7,6 +7,7 @@ import type { columnFormSchema } from "../schema";
 export type Column = {
 	id: string;
 	title: string;
+	position: number;
 };
 interface State {
 	columns: Column[];
@@ -14,18 +15,19 @@ interface State {
 
 interface Action {
 	setColumns: (columns: Column[]) => void;
-	addColumn: (column: z.infer<typeof columnFormSchema>) => void;
+	addColumn: (value: { title: string; boardId: string }) => void;
 }
 
 type ListStore = State & Action;
 
-export const useListStore = create<ListStore>((set, get) => ({
+export const useColumnStore = create<ListStore>((set, get) => ({
 	columns: [],
 	setColumns: (columns) => set(() => ({ columns })),
 	addColumn: async ({ title, boardId }) => {
 		const prevColumns = get().columns;
 
 		const optimisticId = `optimistic-${uid(8)}`;
+		const position = prevColumns.length + 1;
 
 		try {
 			set((state) => ({
@@ -34,11 +36,13 @@ export const useListStore = create<ListStore>((set, get) => ({
 					{
 						id: optimisticId,
 						title,
+						position,
 					},
 				],
 			}));
 			const [data, error] = await createColumnAction({
 				title,
+				position,
 				boardId,
 			});
 

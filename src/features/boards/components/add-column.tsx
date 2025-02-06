@@ -6,17 +6,22 @@ import { CircleCheck, Plus, X } from "lucide-react";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
+import { useColumnStore } from "../stores/column";
 
 export function AddColumn({ boardId }: { boardId: string }) {
+	const addColumn = useColumnStore((state) => state.addColumn);
 	const [isEditable, setEditable] = useState(false);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	function onSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const values = new FormData(e.currentTarget);
-		const title = values.get("title");
+		const title = values.get("title")?.toString() || "";
 		if (title === "") return;
-		console.log(title, boardId);
+		addColumn({
+			title,
+			boardId,
+		});
 		e.currentTarget.reset();
 	}
 

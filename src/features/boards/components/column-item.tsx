@@ -1,5 +1,5 @@
 import React from "react";
-import type { Column } from "../stores/list";
+import type { Column } from "../stores/column";
 
 export type ListItemProps = {
 	column: Column;

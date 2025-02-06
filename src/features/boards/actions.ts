@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
-import { newBoardFormSchema } from "./schema";
+import { columnFormSchema, newBoardFormSchema } from "./schema";
 
 export const createBoardAction = protectedProducer
 	.input(newBoardFormSchema)
@@ -42,4 +42,17 @@ export const getBoardByIdAction = protectedProducer
 		}
 
 		return board;
+	});
+
+export const createColumnAction = protectedProducer
+	.input(columnFormSchema)
+	.handler(async ({ input }) => {
+		const column = await prisma.column.create({
+			data: {
+				title: input.title,
+				boardId: input.boardId,
+			},
+		});
+
+		return column;
 	});

@@ -19,7 +19,7 @@ export default async function Page({ params }: PageProps) {
 				breadcrumbs={[{ label: "Boards", url: "/boards" }, data.title]}
 			/>
 			<div className="flex flex-col flex-1">
-				<Kanban />
+				<Kanban boardId={data.id} />
 			</div>
 		</>
 	);

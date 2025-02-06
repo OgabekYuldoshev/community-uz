@@ -1,12 +1,11 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
-import { useListStore } from "../stores/list";
-import AddNewList from "./add-new-list";
+import { useListStore } from "../stores/column";
+import { AddColumn } from "./add-column";
 import { ColumnItem } from "./column-item";
 
-export function Kanban() {
+export function Kanban({ boardId }: { boardId: string }) {
 	const columns = useListStore((state) => state.columns);
 	return (
 		<div className="relative flex-grow">
@@ -14,7 +13,7 @@ export function Kanban() {
 				{columns.map((column) => (
 					<ColumnItem key={column.id} column={column} />
 				))}
-				<AddNewList />
+				<AddColumn boardId={boardId} />
 			</ol>
 		</div>
 	);

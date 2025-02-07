@@ -1,6 +1,6 @@
 import PageHeader from "@/components/page-header";
-import { getBoardByIdAction } from "@/features/boards/actions";
-import { Kanban } from "@/features/boards/components/kanban";
+import { getBoardByIdAction } from "@/features/board/actions";
+import { Kanban } from "@/features/board/components/kanban";
 import React from "react";
 
 interface PageProps {

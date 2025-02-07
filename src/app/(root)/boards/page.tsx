@@ -1,7 +1,7 @@
 import PageHeader from "@/components/page-header";
-import { getBoardsAction } from "@/features/boards/actions";
-import { BoardCard } from "@/features/boards/components/board-card";
-import { CreateNewBoard } from "@/features/boards/components/create-new-board";
+import { getBoardsAction } from "@/features/board/actions";
+import { BoardCard } from "@/features/board/components/board-card";
+import { CreateNewBoard } from "@/features/board/components/create-new-board";
 import { AppWindow } from "lucide-react";
 import React from "react";
 

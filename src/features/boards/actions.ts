@@ -61,6 +61,9 @@ export const getBoardInfoByIdAction = protectedProducer
 			where: {
 				boardId: input.boardId,
 			},
+			orderBy: {
+				position: "asc",
+			},
 		});
 
 		const tasks = await prisma.task.findMany({
@@ -92,4 +95,21 @@ export const createTaskAction = protectedProducer
 			},
 		});
 		return task;
+	});
+
+export const updateColumnPositionAction = protectedProducer
+	.input(z.record(z.string(), z.number()))
+	.handler(async ({ input }) => {
+		for (const [id, position] of Object.entries(input)) {
+			await prisma.column.update({
+				where: {
+					id,
+				},
+				data: {
+					position,
+				},
+			});
+		}
+
+		return "ok";
 	});

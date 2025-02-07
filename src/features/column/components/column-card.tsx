@@ -1,21 +1,21 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import CreateNewTaskForm from "@/features/task/components/create-new-task-form";
+import { TaskCard } from "@/features/task/components/task-card";
+import { useTaskStore } from "@/features/task/stores/task-store";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import React, { useCallback } from "react";
-import type { ColumnType } from "../stores/column";
-import { useTaskStore } from "../stores/task";
-import { CreateNewTask } from "./create-new-task";
-import { Task } from "./task";
+import type { CustomColumnType } from "../stores/column-store";
 
-export type ColumnProps = {
-	column: ColumnType;
+export type ColumnCardProps = {
+	column: CustomColumnType;
 };
-export function Column({ column }: ColumnProps) {
-	const tasks = useTaskStore((state) => state.tasks);
-
+export function ColumnCard({ column }: ColumnCardProps) {
 	const {
 		setNodeRef,
 		transform,
@@ -30,19 +30,21 @@ export function Column({ column }: ColumnProps) {
 		},
 	});
 
+	const tasksList = useTaskStore((state) => state.tasks);
+
 	const getTasksByColumnId = useCallback(
 		(columnId: string) => {
-			return tasks.filter((task) => task.columnId === columnId);
+			return tasksList.filter((task) => task.columnId === columnId);
 		},
-		[tasks],
+		[tasksList],
 	);
-
-	const taskList = getTasksByColumnId(column.id);
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
 	};
+
+	const tasks = getTasksByColumnId(column.id);
 
 	return (
 		<li
@@ -54,7 +56,7 @@ export function Column({ column }: ColumnProps) {
 			)}
 		>
 			<div className="w-[275px]">
-				<div className="p-2  h-12 rounded bg-secondary flex items-center justify-between">
+				<div className="p-2 h-12 rounded bg-secondary flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Button
 							size="icon"
@@ -70,14 +72,14 @@ export function Column({ column }: ColumnProps) {
 						</Button>
 						<span className="text-sm font-semibold">
 							{column.title}
-							<Badge className="ml-2">{taskList.length}</Badge>
+							<Badge className="ml-2">{tasks.length}</Badge>
 						</span>
 					</div>
-					<CreateNewTask columnId={column.id} />
+					<CreateNewTaskForm columnId={column.id} />
 				</div>
-				<div className="grid grid-cols-1 gap-2 mt-4">
-					{taskList.map((task) => (
-						<Task key={task.id} task={task} />
+				<div className="mt-4 h-full flex flex-col gap-2">
+					{tasks.map((task) => (
+						<TaskCard key={task.id} task={task} />
 					))}
 				</div>
 			</div>

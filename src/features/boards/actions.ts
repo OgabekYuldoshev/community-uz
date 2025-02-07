@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
-import { columnFormSchema, newBoardFormSchema, taskFormSchema } from "./schema";
+import { newBoardFormSchema } from "./schema";
 
 export const createBoardAction = protectedProducer
 	.input(newBoardFormSchema)
@@ -44,22 +44,18 @@ export const getBoardByIdAction = protectedProducer
 		return board;
 	});
 
-export const createColumnAction = protectedProducer
-	.input(columnFormSchema)
-	.handler(async ({ input }) => {
-		const column = await prisma.column.create({
-			data: input,
-		});
-
-		return column;
-	});
-
 export const getBoardInfoByIdAction = protectedProducer
 	.input(z.object({ boardId: z.string() }))
 	.handler(async ({ input }) => {
 		const columns = await prisma.column.findMany({
 			where: {
 				boardId: input.boardId,
+			},
+			select: {
+				id: true,
+				title: true,
+				position: true,
+				boardId: true,
 			},
 			orderBy: {
 				position: "asc",
@@ -70,46 +66,13 @@ export const getBoardInfoByIdAction = protectedProducer
 			where: {
 				boardId: input.boardId,
 			},
+			select: {
+				id: true,
+				title: true,
+				position: true,
+				columnId: true,
+			},
 		});
 
 		return { columns, tasks };
-	});
-
-export const createTaskAction = protectedProducer
-	.input(taskFormSchema)
-	.handler(async ({ input }) => {
-		const column = await prisma.column.findUnique({
-			where: {
-				id: input.columnId,
-			},
-		});
-
-		if (!column) throw "Column not found";
-
-		const task = await prisma.task.create({
-			data: {
-				title: input.title,
-				position: input.position,
-				columnId: column.id,
-				boardId: column.boardId,
-			},
-		});
-		return task;
-	});
-
-export const updateColumnPositionAction = protectedProducer
-	.input(z.record(z.string(), z.number()))
-	.handler(async ({ input }) => {
-		for (const [id, position] of Object.entries(input)) {
-			await prisma.column.update({
-				where: {
-					id,
-				},
-				data: {
-					position,
-				},
-			});
-		}
-
-		return "ok";
 	});

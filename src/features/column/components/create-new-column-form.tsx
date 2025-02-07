@@ -6,10 +6,13 @@ import { CircleCheck, Plus, X } from "lucide-react";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-import { useColumnStore } from "../stores/column";
+import { useColumnStore } from "../stores/column-store";
 
-export function CreateNewColumn({ boardId }: { boardId: string }) {
-	const addColumn = useColumnStore((state) => state.addColumn);
+export type CreateNewColumnForm = {
+	boardId: string;
+};
+export function CreateNewColumnForm({ boardId }: CreateNewColumnForm) {
+	const createNewColumn = useColumnStore((state) => state.createNewColumn);
 	const [isEditable, setEditable] = useState(false);
 	const formRef = useRef<HTMLFormElement>(null);
 
@@ -18,10 +21,12 @@ export function CreateNewColumn({ boardId }: { boardId: string }) {
 		const values = new FormData(e.currentTarget);
 		const title = values.get("title")?.toString() || "";
 		if (title === "") return;
-		addColumn({
+
+		createNewColumn({
 			title,
 			boardId,
 		});
+
 		e.currentTarget.reset();
 	}
 

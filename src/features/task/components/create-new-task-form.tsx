@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -5,20 +7,30 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { Plus } from "lucide-react";
+import { CircleCheck, Plus } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { useTaskStore } from "../stores/task";
-
-export function CreateNewTask({ columnId }: { columnId: string }) {
+import { useTaskStore } from "../stores/task-store";
+export type CreateNewTaskFormProps = {
+	columnId: string;
+};
+export default function CreateNewTaskForm({
+	columnId,
+}: CreateNewTaskFormProps) {
 	const [isEditable, setEditable] = useState(false);
-	const addTask = useTaskStore((state) => state.addTask);
+	const createNewTask = useTaskStore((state) => state.createNewTask);
+
 	function onSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 		const title = form.get("title")?.toString() || "";
 		if (title === "") return;
-		addTask({ title, columnId });
+
+		createNewTask({
+			title,
+			columnId,
+		});
+
 		setEditable(false);
 	}
 
@@ -33,6 +45,7 @@ export function CreateNewTask({ columnId }: { columnId: string }) {
 				<form onSubmit={onSubmit} className="flex flex-col gap-2">
 					<Input autoFocus name="title" placeholder="Enter task title" />
 					<Button type="submit" className="w-fit ml-auto">
+						<CircleCheck />
 						<span>Create task</span>
 					</Button>
 				</form>

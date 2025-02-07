@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
+import { z } from "zod";
 import { ZSAError } from "zsa";
 import { createNewTaskSchema } from "./schema";
 
@@ -25,6 +26,21 @@ export const createNewTaskAction = protectedProducer
 				boardId: column.boardId,
 			},
 		});
+
+		return task;
+	});
+
+export const getTaskByIdAction = protectedProducer
+	.input(z.object({ taskId: z.string() }))
+	.handler(async ({ input }) => {
+		const task = await prisma.task.findUnique({
+			where: {
+				id: input.taskId,
+			},
+		});
+		if (!task) {
+			throw new ZSAError("NOT_FOUND", "Task not found");
+		}
 
 		return task;
 	});

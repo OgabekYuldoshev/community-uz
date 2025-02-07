@@ -11,11 +11,13 @@ export type CustomTaskType = {
 };
 
 type State = {
+	currentTaskId: string;
 	tasks: CustomTaskType[];
 };
 
 type Action = {
 	setTasks: (tasks: CustomTaskType[]) => void;
+	setCurrentTaskId: (taskId: string) => void;
 	createNewTask: (values: { title: string; columnId: string }) => void;
 	resetTaskStore: () => void;
 };
@@ -23,11 +25,13 @@ type Action = {
 export type TaskStore = State & Action;
 
 const initialState: State = {
+	currentTaskId: "",
 	tasks: [],
 };
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
 	...initialState,
+	setCurrentTaskId: (taskId: string) => set({ currentTaskId: taskId }),
 	setTasks: (tasks: CustomTaskType[]) => set({ tasks }),
 	createNewTask: async ({ title, columnId }) => {
 		const prevTasks = get().tasks;

@@ -1,6 +1,7 @@
 import PageHeader from "@/components/page-header";
 import { getBoardByIdAction } from "@/features/board/actions";
 import { Kanban } from "@/features/board/components/kanban";
+import { TaskView } from "@/features/task/components/task-view";
 import React from "react";
 
 interface PageProps {
@@ -20,6 +21,7 @@ export default async function Page({ params }: PageProps) {
 			/>
 			<div className="flex flex-col flex-1">
 				<Kanban boardId={data.id} />
+				<TaskView />
 			</div>
 		</>
 	);

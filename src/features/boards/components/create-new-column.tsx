@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import { useColumnStore } from "../stores/column";
 
-export function AddColumn({ boardId }: { boardId: string }) {
+export function CreateNewColumn({ boardId }: { boardId: string }) {
 	const addColumn = useColumnStore((state) => state.addColumn);
 	const [isEditable, setEditable] = useState(false);
 	const formRef = useRef<HTMLFormElement>(null);
@@ -40,7 +40,7 @@ export function AddColumn({ boardId }: { boardId: string }) {
 						<div className="flex items-center gap-2">
 							<Button className="w-fit" type="submit">
 								<CircleCheck />
-								<span>Add list</span>
+								<span>Create column</span>
 							</Button>
 							<Button
 								onClick={() => setEditable(false)}
@@ -56,7 +56,7 @@ export function AddColumn({ boardId }: { boardId: string }) {
 					// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
 					<div
 						onClick={() => setEditable(true)}
-						className="flex gap-2 items-center justify-center w-full select-none cursor-pointer p-2 h-12 "
+						className="flex gap-2 items-center justify-center w-full select-none cursor-pointer p-2 h-12"
 					>
 						<Plus size={20} />
 						<span className="text-sm">Add another list</span>

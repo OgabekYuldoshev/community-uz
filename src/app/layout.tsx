@@ -33,7 +33,7 @@ export default function RootLayout({
 			>
 				<NextTopLoader />
 				<Providers>{children}</Providers>
-				<Toaster />
+				<Toaster richColors />
 			</body>
 		</html>
 	);

@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
-import { columnFormSchema, newBoardFormSchema } from "./schema";
+import { columnFormSchema, newBoardFormSchema, taskFormSchema } from "./schema";
 
 export const createBoardAction = protectedProducer
 	.input(newBoardFormSchema)
@@ -52,4 +52,44 @@ export const createColumnAction = protectedProducer
 		});
 
 		return column;
+	});
+
+export const getBoardInfoByIdAction = protectedProducer
+	.input(z.object({ boardId: z.string() }))
+	.handler(async ({ input }) => {
+		const columns = await prisma.column.findMany({
+			where: {
+				boardId: input.boardId,
+			},
+		});
+
+		const tasks = await prisma.task.findMany({
+			where: {
+				boardId: input.boardId,
+			},
+		});
+
+		return { columns, tasks };
+	});
+
+export const createTaskAction = protectedProducer
+	.input(taskFormSchema)
+	.handler(async ({ input }) => {
+		const column = await prisma.column.findUnique({
+			where: {
+				id: input.columnId,
+			},
+		});
+
+		if (!column) throw "Column not found";
+
+		const task = await prisma.task.create({
+			data: {
+				title: input.title,
+				position: input.position,
+				columnId: column.id,
+				boardId: column.boardId,
+			},
+		});
+		return task;
 	});

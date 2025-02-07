@@ -19,6 +19,12 @@ enum UserType {
   USER
 }
 
+enum StatusType {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -33,22 +39,42 @@ model User {
 }
 
 model Board {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   userId    String
+  status    StatusType? @default(ACTIVE)
 
   user   User     @relation(fields: [userId], references: [id])
   Column Column[]
+  Task   Task[]
 }
 
 model Column {
-  id        String   @id @default(cuid())
-  title     String
-  position  Int
+  id       String      @id @default(cuid())
+  title    String
+  position Int
+  status   StatusType? @default(ACTIVE)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  board     Board    @relation(fields: [boardId], references: [id])
+  boardId   String
+
+  Task Task[]
+}
+
+model Task {
+  id       String      @id @default(cuid())
+  title    String
+  position Int
+  status   StatusType? @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  column    Column   @relation(fields: [columnId], references: [id])
+  columnId  String
   board     Board    @relation(fields: [boardId], references: [id])
   boardId   String
 }

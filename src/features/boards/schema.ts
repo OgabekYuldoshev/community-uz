@@ -9,3 +9,9 @@ export const columnFormSchema = z.object({
 	position: z.number(),
 	boardId: z.string().min(1),
 });
+
+export const taskFormSchema = z.object({
+	title: z.string().min(1),
+	position: z.number(),
+	columnId: z.string().min(1),
+});

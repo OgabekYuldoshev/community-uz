@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -46,9 +46,10 @@ model Board {
   userId    String
   status    StatusType? @default(ACTIVE)
 
-  user   User     @relation(fields: [userId], references: [id])
+  User   User     @relation(fields: [userId], references: [id])
   Column Column[]
   Task   Task[]
+  Label  Label[]
 }
 
 model Column {
@@ -59,7 +60,7 @@ model Column {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  board     Board    @relation(fields: [boardId], references: [id])
+  Board     Board    @relation(fields: [boardId], references: [id])
   boardId   String
 
   Task Task[]
@@ -73,8 +74,25 @@ model Task {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  column    Column   @relation(fields: [columnId], references: [id])
-  columnId  String
-  board     Board    @relation(fields: [boardId], references: [id])
-  boardId   String
+
+  Column   Column @relation(fields: [columnId], references: [id])
+  columnId String
+  Board    Board  @relation(fields: [boardId], references: [id])
+  boardId  String
+
+  labels Label[]
+}
+
+model Label {
+  id        String      @id @default(cuid())
+  title     String
+  status    StatusType? @default(ACTIVE)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  Board   Board  @relation(fields: [boardId], references: [id])
+  boardId String
+
+  Task   Task?   @relation(fields: [taskId], references: [id])
+  taskId String?
 }

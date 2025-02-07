@@ -13,6 +13,7 @@ import { getTaskByIdAction } from "../actions";
 import { ENTITY } from "../constants";
 import { useTaskStore } from "../stores/task-store";
 
+import { LabelTag } from "@/features/label/components/label-tag";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 export function TaskView() {
 	const currentTaskId = useTaskStore((state) => state.currentTaskId);
@@ -62,6 +63,9 @@ function TaskViewDetails({ taskId }: TaskViewDetailsProps) {
 			<DialogHeader>
 				<DialogTitle>{data?.title}</DialogTitle>
 			</DialogHeader>
+			<div className="flex items-center">
+				<LabelTag id="salom" title="Label" />
+			</div>
 		</>
 	);
 }

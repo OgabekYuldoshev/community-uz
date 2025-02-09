@@ -71,6 +71,13 @@ export const getBoardInfoByIdAction = protectedProducer
 				title: true,
 				position: true,
 				columnId: true,
+				labels: {
+					select: {
+						id: true,
+						title: true,
+						color: true,
+					}
+				},
 			},
 		});
 

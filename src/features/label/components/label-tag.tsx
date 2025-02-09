@@ -1,16 +1,16 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import React from "react";
-
+import type { CustomLabelType } from "../stores/label-store";
 export type LabelTagProps = {
-	id: string;
-	title: string;
+  label: CustomLabelType;
 };
-export function LabelTag({ title }: LabelTagProps) {
-	return (
-		<Badge className="flex items-center gap-2 cursor-pointer select-none">
-			{title}
-		</Badge>
-	);
+export function LabelTag({ label }: LabelTagProps) {
+  return (
+    <Badge
+      style={{ backgroundColor: label.color }}
+      className="flex items-center gap-2 cursor-pointer select-none text-white"
+    >
+      {label.title}
+    </Badge>
+  );
 }

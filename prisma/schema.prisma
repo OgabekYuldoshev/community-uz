@@ -86,6 +86,7 @@ model Task {
 model Label {
   id        String      @id @default(cuid())
   title     String
+  color     String
   status    StatusType? @default(ACTIVE)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt

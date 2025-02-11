@@ -4,6 +4,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { useBoard } from "@/features/board/context";
 import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
@@ -15,8 +16,7 @@ export type CreateNewLabelFormProps = {
 };
 export function AddOrCreateLabelPopover({ taskId }: CreateNewLabelFormProps) {
 	const [isEditable, setEditable] = useState(false);
-	const searchParams = useParams<{ id: string }>();
-	const boardId = searchParams.id;
+	const { board } = useBoard();
 
 	return (
 		<Popover>
@@ -28,13 +28,13 @@ export function AddOrCreateLabelPopover({ taskId }: CreateNewLabelFormProps) {
 			<PopoverContent className="w-fit">
 				{isEditable ? (
 					<CreateNewLabelForm
-						boardId={boardId}
+						boardId={board.id}
 						onBackLabel={() => setEditable(false)}
 					/>
 				) : (
 					<AddLabelsToTask
 						taskId={taskId}
-						boardId={boardId}
+						boardId={board.id}
 						onCreateLabel={() => setEditable(true)}
 					/>
 				)}

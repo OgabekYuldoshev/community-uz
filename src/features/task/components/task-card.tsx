@@ -27,7 +27,7 @@ export function TaskCard({ task }: TaskCardProps) {
 			className="relative p-2 bg-secondary rounded hover:ring transition-all cursor-pointer"
 		>
 			{currentTaskLabels.length > 0 && (
-				<div className="flex flex-wrap mb-2">
+				<div className="flex flex-wrap mb-2 gap-1">
 					{currentTaskLabels.map((label) => (
 						<Badge
 							style={{ backgroundColor: label.color }}

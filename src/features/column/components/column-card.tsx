@@ -75,13 +75,13 @@ export function ColumnCard({ column }: ColumnCardProps) {
 							<Badge className="ml-2">{tasks.length}</Badge>
 						</span>
 					</div>
-					<CreateNewTaskForm columnId={column.id} />
 				</div>
-				<div className="mt-4 h-full flex flex-col gap-2">
+				<ul className="mt-4 h-full flex flex-col gap-2">
 					{tasks.map((task) => (
 						<TaskCard key={task.id} task={task} />
 					))}
-				</div>
+					<CreateNewTaskForm columnId={column.id} />
+				</ul>
 			</div>
 		</li>
 	);

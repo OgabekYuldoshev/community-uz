@@ -19,7 +19,6 @@ type Action = {
 	setColumns: (columns: CustomColumnType[]) => void;
 	createNewColumn: (values: { title: string; boardId: string }) => void;
 	updateColumnsPosition: (from: number, to: number) => void;
-
 	resetColumnStore: () => void;
 };
 

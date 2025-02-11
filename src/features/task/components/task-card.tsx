@@ -8,12 +8,12 @@ export function TaskCard({ task }: TaskCardProps) {
 	const setCurrentTaskId = useTaskStore((state) => state.setCurrentTaskId);
 
 	return (
-		<div
+		<li
 			onClick={() => setCurrentTaskId(task.id)}
 			onKeyUp={() => setCurrentTaskId(task.id)}
 			className="relative p-2 bg-secondary rounded hover:ring transition-all cursor-pointer"
 		>
 			<h3 className="font-semibold text-sm">{task.title}</h3>
-		</div>
+		</li>
 	);
 }

@@ -1,16 +1,16 @@
 "use server";
 
-import { protectedProducer } from "@/lib/server-action";
-import { createNewLabelSchema } from "./schema";
 import { prisma } from "@/lib/prisma";
+import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
+import { createNewLabelSchema } from "./schema";
 
 export const createNewLabelAction = protectedProducer
 	.input(createNewLabelSchema)
 	.handler(async ({ input }) => {
 		const label = await prisma.label.create({
-			data: input
-		})
+			data: input,
+		});
 
 		return {
 			id: label.id,
@@ -19,7 +19,6 @@ export const createNewLabelAction = protectedProducer
 			boardId: label.boardId,
 		};
 	});
-
 
 export const getLabelsByBoardIdAction = protectedProducer
 	.input(z.object({ boardId: z.string() }))
@@ -49,5 +48,5 @@ export const setLabelsToTaskAction = protectedProducer
 			},
 		});
 
-		return "ok"
+		return "ok";
 	});

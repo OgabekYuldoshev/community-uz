@@ -7,9 +7,11 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { CircleCheck, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { CircleCheck, Plus, X } from "lucide-react";
 import type React from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useOnClickOutside } from "usehooks-ts";
 import { useTaskStore } from "../stores/task-store";
 export type CreateNewTaskFormProps = {
 	columnId: string;
@@ -18,8 +20,10 @@ export default function CreateNewTaskForm({
 	columnId,
 }: CreateNewTaskFormProps) {
 	const [isEditable, setEditable] = useState(false);
+	const containerRef = useRef<HTMLLIElement>(null);
 	const createNewTask = useTaskStore((state) => state.createNewTask);
 
+	useOnClickOutside(containerRef as any, () => setEditable(false));
 	function onSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
@@ -34,22 +38,47 @@ export default function CreateNewTaskForm({
 		setEditable(false);
 	}
 
+	function onToggleView() {
+		if (isEditable) return;
+
+		setEditable(true);
+	}
+
 	return (
-		<Popover onOpenChange={setEditable} open={isEditable}>
-			<PopoverTrigger asChild>
-				<Button size="icon" className="size-6">
-					<Plus />
-				</Button>
-			</PopoverTrigger>
-			<PopoverContent align="end">
+		<li
+			ref={containerRef}
+			onClick={onToggleView}
+			onKeyUp={onToggleView}
+			className={cn(
+				"p-2 border border-dashed rounded hover:ring transition-all",
+				!isEditable ? "cursor-pointer" : "ring",
+			)}
+		>
+			{isEditable ? (
 				<form onSubmit={onSubmit} className="flex flex-col gap-2">
 					<Input autoFocus name="title" placeholder="Enter task title" />
-					<Button type="submit" className="w-fit ml-auto">
-						<CircleCheck />
-						<span>Create task</span>
-					</Button>
+					<div className="flex flex-1 gap-2">
+						<Button type="submit" className="w-fit">
+							<CircleCheck />
+							<span>Create task</span>
+						</Button>
+						<Button
+							onClick={() => setEditable(false)}
+							size="icon"
+							type="button"
+							variant="ghost"
+							className="flex-shrink-0"
+						>
+							<X />
+						</Button>
+					</div>
 				</form>
-			</PopoverContent>
-		</Popover>
+			) : (
+				<div className="flex items-center gap-2">
+					<Plus size={20} />
+					<span className="text-sm">Add new task</span>
+				</div>
+			)}
+		</li>
 	);
 }

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
+import type { CustomLabelType } from "../label/stores/label-store";
 import { newBoardFormSchema } from "./schema";
 
 export const createBoardAction = protectedProducer
@@ -41,7 +42,9 @@ export const getBoardByIdAction = protectedProducer
 			throw "Board not found.";
 		}
 
-		return board;
+		return {
+			board,
+		};
 	});
 
 export const getBoardInfoByIdAction = protectedProducer
@@ -76,10 +79,21 @@ export const getBoardInfoByIdAction = protectedProducer
 						id: true,
 						title: true,
 						color: true,
-					}
+					},
 				},
 			},
 		});
 
-		return { columns, tasks };
+		const labels = tasks.reduce(
+			(acc, task) => {
+				return {
+					// biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+					...acc,
+					[task.id]: task.labels,
+				};
+			},
+			{} as Record<string, CustomLabelType[]>,
+		);
+
+		return { columns, tasks, labels };
 	});

@@ -10,6 +10,7 @@ import {
 	type CustomLabelType,
 	useLabelStore,
 } from "@/features/label/stores/label-store";
+import { TaskDetailsDialog } from "@/features/task/components/task-details-dialog";
 import {
 	type CustomTaskType,
 	useTaskStore,
@@ -94,6 +95,7 @@ export function KanbanPlayground({
 				</SortableContext>
 				<CreateNewColumnForm boardId={board.id} />
 			</ol>
+			<TaskDetailsDialog />
 		</DndContext>
 	);
 }

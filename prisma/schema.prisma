@@ -19,12 +19,6 @@ enum UserType {
   USER
 }
 
-enum StatusType {
-  ACTIVE
-  INACTIVE
-  DELETED
-}
-
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -34,66 +28,4 @@ model User {
   role      UserType @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Board Board[]
-}
-
-model Board {
-  id        String      @id @default(cuid())
-  title     String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  userId    String
-  status    StatusType? @default(ACTIVE)
-
-  User   User     @relation(fields: [userId], references: [id])
-  Column Column[]
-  Task   Task[]
-  Label  Label[]
-}
-
-model Column {
-  id       String      @id @default(cuid())
-  title    String
-  position Int
-  status   StatusType? @default(ACTIVE)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Board     Board    @relation(fields: [boardId], references: [id])
-  boardId   String
-
-  Task Task[]
-}
-
-model Task {
-  id       String      @id @default(cuid())
-  title    String
-  position Int
-  status   StatusType? @default(ACTIVE)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Column   Column @relation(fields: [columnId], references: [id])
-  columnId String
-  Board    Board  @relation(fields: [boardId], references: [id])
-  boardId  String
-
-  labels Label[]
-}
-
-model Label {
-  id        String      @id @default(cuid())
-  title     String
-  color     String
-  status    StatusType? @default(ACTIVE)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-
-  Board   Board  @relation(fields: [boardId], references: [id])
-  boardId String
-
-  Task   Task?   @relation(fields: [taskId], references: [id])
-  taskId String?
 }

@@ -1,10 +1,11 @@
-import PageHeader from "@/components/page-header";
+import { PageWrapper, PageHeader, PageContent } from "@/components/page";
 import React from "react";
 
 export default async function page() {
-	return (
-		<>
-			<PageHeader title="Dashboard" />
-		</>
-	);
+  return (
+    <PageWrapper>
+      <PageHeader title="Dashboard" breadcrumbs={["tstett"]} />
+      <PageContent>This is dashboard page</PageContent>
+    </PageWrapper>
+  );
 }

@@ -16,9 +16,26 @@ export const createNewProjectAction = protectedProducer
 				name: input.name,
 				description: input.description,
 				userId,
+				Status: {
+					createMany: {
+						data: [
+							{
+								name: "To do",
+								position: 0,
+							},
+							{
+								name: "In Progress",
+								position: 1,
+							},
+							{
+								name: "Done",
+								position: 2,
+							},
+						],
+					},
+				},
 			},
 		});
-
 		return project;
 	});
 

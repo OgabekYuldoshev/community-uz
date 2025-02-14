@@ -32,6 +32,18 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User     @relation(fields: [userId], references: [id])
   userId String
+  Status Status[]
+}
+
+model Status {
+  id        String   @id @default(cuid())
+  name      String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Project   Project @relation(fields: [projectId], references: [id])
+  projectId String
 }

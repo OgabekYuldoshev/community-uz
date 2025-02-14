@@ -1,5 +1,5 @@
 import React from "react";
 
 export default async function Page() {
-	return <>test</>;
+	return <div>Kanban</div>;
 }

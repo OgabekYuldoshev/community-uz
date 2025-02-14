@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
 import { ZSAError } from "zsa";
-import { projectFormSchema } from "./schema";
+import { projectFormSchema, statusFormSchema } from "./schema";
 
 export const createNewProjectAction = protectedProducer
 	.input(projectFormSchema)
@@ -69,4 +69,48 @@ export const getProjectByIdAction = protectedProducer
 		}
 
 		return project;
+	});
+
+export const getStatusByProjectId = protectedProducer
+	.input(z.object({ id: z.string().cuid() }))
+	.handler(async ({ input }) => {
+		const status = await prisma.status.findMany({
+			where: {
+				projectId: input.id,
+			},
+			orderBy: {
+				position: "asc",
+			},
+			select: {
+				id: true,
+				name: true,
+				position: true,
+			},
+		});
+
+		return status;
+	});
+
+export const createNewStatusAction = protectedProducer
+	.input(
+		statusFormSchema.extend({
+			projectId: z.string().cuid(),
+			position: z.number(),
+		}),
+	)
+	.handler(async ({ input }) => {
+		const status = await prisma.status.create({
+			data: {
+				name: input.name,
+				position: input.position,
+				projectId: input.projectId,
+			},
+			select: {
+				id: true,
+				name: true,
+				position: true,
+			},
+		});
+
+		return status;
 	});

@@ -84,5 +84,7 @@ export function PageHeader({ breadcrumbs = [], left }: PageHeaderProps) {
 export type PageContentProps = React.ComponentPropsWithoutRef<"section">;
 
 export function PageContent({ className, ...props }: PageContentProps) {
-	return <section className={cn("block flex-1 p-2", className)} {...props} />;
+	return (
+		<section className={cn("flex flex-col flex-1 p-2", className)} {...props} />
+	);
 }

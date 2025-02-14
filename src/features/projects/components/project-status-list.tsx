@@ -30,7 +30,6 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import type { inferServerActionReturnData } from "zsa";
 import {
 	createNewStatusAction,
 	deleteStatusAction,
@@ -40,9 +39,8 @@ import {
 import { ENTITY } from "../constants";
 import { useProject } from "../providers/project-provider";
 import { statusFormSchema } from "../schema";
+import type { StatusInferType } from "../type";
 type FormValue = z.infer<typeof statusFormSchema>;
-
-type StatusInferType = inferServerActionReturnData<typeof getStatusByProjectId>;
 
 export function ProjectStatusList() {
 	const { project } = useProject();

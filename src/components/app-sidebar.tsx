@@ -15,9 +15,11 @@ import {
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
+	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { Profile } from "./profile";
@@ -54,6 +56,18 @@ const items = [
 export function AppSidebar() {
 	return (
 		<Sidebar variant="floating">
+			<SidebarHeader>
+				<SidebarMenu>
+					<SidebarMenuItem>
+						<SidebarMenuSubButton className="h-12" asChild>
+							{/* biome-ignore lint/a11y/useValidAriaRole: <explanation> */}
+							<Link role="h1" href="/" className="font-bold">
+								Uz Community
+							</Link>
+						</SidebarMenuSubButton>
+					</SidebarMenuItem>
+				</SidebarMenu>
+			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>Application</SidebarGroupLabel>

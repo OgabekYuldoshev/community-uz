@@ -1,9 +1,10 @@
 import {
 	AppWindow,
 	Calendar,
-	CircuitBoard,
-	Inbox,
+	CirclePlus,
+	FolderGit2,
 	LayoutDashboard,
+	Projector,
 	Search,
 	Settings,
 } from "lucide-react";
@@ -21,37 +22,10 @@ import {
 	SidebarMenuItem,
 	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
+import { CreateNewProjectForm } from "@/features/projects/components/create-new-project-form";
 import Link from "next/link";
 import { Profile } from "./profile";
-
-// Menu items.
-const items = [
-	{
-		title: "Dashboard",
-		url: "/",
-		icon: LayoutDashboard,
-	},
-	{
-		title: "Boards",
-		url: "/boards",
-		icon: AppWindow,
-	},
-	{
-		title: "Calendar",
-		url: "#",
-		icon: Calendar,
-	},
-	{
-		title: "Search",
-		url: "#",
-		icon: Search,
-	},
-	{
-		title: "Settings",
-		url: "#",
-		icon: Settings,
-	},
-];
+import { Button } from "./ui/button";
 
 export function AppSidebar() {
 	return (
@@ -73,16 +47,36 @@ export function AppSidebar() {
 					<SidebarGroupLabel>Application</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{items.map((item) => (
-								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild>
-										<Link href={item.url}>
-											<item.icon />
-											<span>{item.title}</span>
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
+							<SidebarMenuItem>
+								<SidebarMenuButton asChild>
+									<Link href="/">
+										<LayoutDashboard />
+										<span>Dashboard</span>
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									className="flex items-center justify-between"
+									asChild
+								>
+									<div>
+										<div className="flex items-center gap-2">
+											<FolderGit2 size={16} />
+											<span>Projects</span>
+										</div>
+										<CreateNewProjectForm>
+											<Button
+												size="icon"
+												className="size-6"
+												variant="secondary"
+											>
+												<CirclePlus />
+											</Button>
+										</CreateNewProjectForm>
+									</div>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

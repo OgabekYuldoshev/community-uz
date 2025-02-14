@@ -14,6 +14,7 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarGroup,
+	SidebarGroupAction,
 	SidebarGroupContent,
 	SidebarGroupLabel,
 	SidebarHeader,
@@ -23,6 +24,7 @@ import {
 	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import { CreateNewProjectForm } from "@/features/projects/components/create-new-project-form";
+import { SidebarProjectsMenu } from "@/features/projects/components/sidebar-projects-menu";
 import Link from "next/link";
 import { Profile } from "./profile";
 import { Button } from "./ui/button";
@@ -55,29 +57,18 @@ export function AppSidebar() {
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
-							<SidebarMenuItem>
-								<SidebarMenuButton
-									className="flex items-center justify-between"
-									asChild
-								>
-									<div>
-										<div className="flex items-center gap-2">
-											<FolderGit2 size={16} />
-											<span>Projects</span>
-										</div>
-										<CreateNewProjectForm>
-											<Button
-												size="icon"
-												className="size-6"
-												variant="secondary"
-											>
-												<CirclePlus />
-											</Button>
-										</CreateNewProjectForm>
-									</div>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
 						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+				<SidebarGroup>
+					<SidebarGroupLabel>Projects</SidebarGroupLabel>
+					<CreateNewProjectForm>
+						<SidebarGroupAction title="Add Project">
+							<CirclePlus /> <span className="sr-only">Add Project</span>
+						</SidebarGroupAction>
+					</CreateNewProjectForm>
+					<SidebarGroupContent>
+						<SidebarProjectsMenu />
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>

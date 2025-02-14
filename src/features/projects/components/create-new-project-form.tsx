@@ -14,15 +14,19 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
+	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState, type PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
+import { createNewProjectAction } from "../action";
 import { projectFormSchema } from "../schema";
 
 type FormValue = z.infer<typeof projectFormSchema>;
@@ -30,6 +34,7 @@ type FormValue = z.infer<typeof projectFormSchema>;
 export type CreateNewProjectFormProps = PropsWithChildren;
 export function CreateNewProjectForm({ children }: CreateNewProjectFormProps) {
 	const [open, setOpen] = useState(false);
+	const router = useRouter();
 
 	const form = useForm<FormValue>({
 		resolver: zodResolver(projectFormSchema),
@@ -39,8 +44,16 @@ export function CreateNewProjectForm({ children }: CreateNewProjectFormProps) {
 		},
 	});
 
-	function onSubmit(values: FormValue) {
-		console.log(values);
+	async function onSubmit(values: FormValue) {
+		const [_, error] = await createNewProjectAction(values);
+		if (error) {
+			toast.error(error.message);
+			return;
+		}
+		toast.success("Project created successfully");
+		setOpen(false);
+		router.refresh();
+		form.reset();
 	}
 
 	return (
@@ -67,6 +80,7 @@ export function CreateNewProjectForm({ children }: CreateNewProjectFormProps) {
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
+									<FormMessage />
 								</FormItem>
 							)}
 						/>
@@ -79,6 +93,7 @@ export function CreateNewProjectForm({ children }: CreateNewProjectFormProps) {
 									<FormControl>
 										<Textarea cols={6} {...field} />
 									</FormControl>
+									<FormMessage />
 								</FormItem>
 							)}
 						/>

@@ -11,6 +11,7 @@ import {
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
@@ -19,6 +20,7 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { Profile } from "./profile";
 
 // Menu items.
 const items = [
@@ -71,6 +73,9 @@ export function AppSidebar() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter>
+				<Profile />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

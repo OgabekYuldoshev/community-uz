@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { uid } from "radash";
 import type React from "react";
 import { Fragment, type ReactNode } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
@@ -24,11 +25,45 @@ export function PageWrapper({ className, ...props }: PageWrapperProps) {
 }
 
 export type PageHeaderProps = {
-	title: string;
 	breadcrumbs?: Array<string | { label: string; url: string }>;
 	left?: ReactNode;
 };
-export function PageHeader({ title, breadcrumbs = [], left }: PageHeaderProps) {
+export function PageHeader({ breadcrumbs = [], left }: PageHeaderProps) {
+	const items = [
+		<BreadcrumbItem key={uid(10)}>
+			<BreadcrumbLink asChild>
+				<Link href="/">Dashboard</Link>
+			</BreadcrumbLink>
+		</BreadcrumbItem>,
+		...breadcrumbs.map((breadcrumb) => {
+			if (typeof breadcrumb === "object") {
+				return (
+					<BreadcrumbItem key={uid(10)}>
+						<BreadcrumbLink asChild>
+							<Link href={breadcrumb.url}>{breadcrumb.label}</Link>
+						</BreadcrumbLink>
+					</BreadcrumbItem>
+				);
+			}
+
+			return (
+				<BreadcrumbItem key={uid(10)}>
+					<BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
+				</BreadcrumbItem>
+			);
+		}),
+	];
+
+	const renderItems = [];
+
+	for (let i = 0; i < items.length; i++) {
+		const element = items[i];
+		renderItems.push(element);
+		if (i !== items.length - 1) {
+			renderItems.push(<BreadcrumbSeparator key={uid(10)} />);
+		}
+	}
+
 	return (
 		<div className="h-16 p-2 flex-shrink-0">
 			<div className="bg-sidebar rounded-lg border flex items-center justify-between h-full px-2">
@@ -36,31 +71,7 @@ export function PageHeader({ title, breadcrumbs = [], left }: PageHeaderProps) {
 					<SidebarTrigger />
 					<Breadcrumb>
 						<BreadcrumbList className="text-xs !gap-1">
-							<BreadcrumbItem>
-								<BreadcrumbLink asChild>
-									<Link href="/">Dashboard</Link>
-								</BreadcrumbLink>
-							</BreadcrumbItem>
-							{breadcrumbs.length > 0 && <BreadcrumbSeparator />}
-							{breadcrumbs.map((breadcrumb) => {
-								if (typeof breadcrumb === "object") {
-									return (
-										<BreadcrumbItem key={breadcrumb.label}>
-											<BreadcrumbLink asChild>
-												<Link href={breadcrumb.url}>{breadcrumb.label}</Link>
-											</BreadcrumbLink>
-										</BreadcrumbItem>
-									);
-								}
-								return (
-									<Fragment key={breadcrumb}>
-										{breadcrumbs.length > 1 && <BreadcrumbSeparator />}
-										<BreadcrumbItem>
-											<BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
-										</BreadcrumbItem>
-									</Fragment>
-								);
-							})}
+							{renderItems}
 						</BreadcrumbList>
 					</Breadcrumb>
 				</div>

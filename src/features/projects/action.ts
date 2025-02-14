@@ -2,6 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
+import { z } from "zod";
+import { ZSAError } from "zsa";
 import { projectFormSchema } from "./schema";
 
 export const createNewProjectAction = protectedProducer
@@ -35,3 +37,19 @@ export const getProjectsAction = protectedProducer.handler(async ({ ctx }) => {
 
 	return projects;
 });
+
+export const getProjectByIdAction = protectedProducer
+	.input(z.object({ id: z.string().cuid() }))
+	.handler(async ({ input }) => {
+		const project = await prisma.project.findUnique({
+			where: {
+				id: input.id,
+			},
+		});
+
+		if (!project) {
+			throw new ZSAError("NOT_FOUND", "Project not found");
+		}
+
+		return project;
+	});

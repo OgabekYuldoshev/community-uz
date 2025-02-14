@@ -11,7 +11,7 @@ export default async function Page({
 	if (error) throw error;
 
 	return (
-		<div className="block mt-4 flex-1 relative flex-grow">
+		<div className="relative flex-grow mt-4">
 			<Kanban statuses={statuses} />
 		</div>
 	);

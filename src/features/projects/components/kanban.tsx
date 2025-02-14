@@ -16,11 +16,11 @@ export function Kanban({ statuses }: KanbanProps) {
 	}, [statuses, setStatuses]);
 
 	return (
-		<ol className="absolute top-0 left-0 right-0 bottom-0 overflow-y-hidden overflow-x-auto flex flex-row scrollbar-thumb-border scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thin gap-4">
+		<ol className="absolute top-0 left-0 right-0 bottom-0 overflow-y-hidden overflow-x-auto flex flex-row scrollbar-thumb-border scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thin gap-4 whitespace-nowrap list-none">
 			{currentStatuses.map((item) => (
 				<li
 					key={item.id}
-					className="block flex-shrink-0 items-start whitespace-nowrap h-full w-fit"
+					className="block flex-shrink-0 items-start h-full whitespace-nowrap"
 				>
 					<StatusCard {...{ item }} />
 				</li>

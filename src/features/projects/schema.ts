@@ -17,3 +17,7 @@ export const statusPositionSchema = z.object({
 		}),
 	),
 });
+
+export const taskFormSchema = z.object({
+	name: z.string().min(3),
+});

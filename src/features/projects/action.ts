@@ -4,7 +4,11 @@ import { prisma } from "@/lib/prisma";
 import { protectedProducer } from "@/lib/server-action";
 import { z } from "zod";
 import { ZSAError } from "zsa";
-import { projectFormSchema, statusFormSchema } from "./schema";
+import {
+	projectFormSchema,
+	statusFormSchema,
+	statusPositionSchema,
+} from "./schema";
 
 export const createNewProjectAction = protectedProducer
 	.input(projectFormSchema)
@@ -113,4 +117,36 @@ export const createNewStatusAction = protectedProducer
 		});
 
 		return status;
+	});
+
+export const deleteStatusAction = protectedProducer
+	.input(
+		z.object({
+			id: z.string().cuid(),
+		}),
+	)
+	.handler(async ({ input }) => {
+		const status = await prisma.status.delete({
+			where: {
+				id: input.id,
+			},
+		});
+
+		return status;
+	});
+
+export const updateStatusPositionAction = protectedProducer
+	.input(statusPositionSchema)
+	.handler(async ({ input }) => {
+		for (const { id, position } of input.items) {
+			await prisma.status.update({
+				where: {
+					id,
+				},
+				data: {
+					position,
+				},
+			});
+		}
+		return "ok";
 	});

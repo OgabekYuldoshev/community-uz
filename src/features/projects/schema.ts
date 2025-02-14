@@ -8,3 +8,12 @@ export const projectFormSchema = z.object({
 export const statusFormSchema = z.object({
 	name: z.string().min(3),
 });
+
+export const statusPositionSchema = z.object({
+	items: z.array(
+		z.object({
+			id: z.string().cuid(),
+			position: z.number(),
+		}),
+	),
+});
